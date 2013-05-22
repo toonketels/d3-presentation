@@ -1,0 +1,582 @@
+include includes/header.html
+
+
+
+section
+  h1 Grunt.js
+  h3 the JavaScript Task Runner
+  p.
+    <small>Created by <a href="http://twitter.com/hakimel">@toonketels</a></small>
+
+  p.
+    <small>Presented by <a href="http://twitter.com/mylittletony">Anthony Ringoet</a> & <a href="http://twitter.com/toonketels">Toon Ketels</a></small>
+
+
+section
+  section
+    h2 Overview
+    ul
+      li What is grunt?
+      li Why use grunt?
+      li How to use Grunt?
+
+  section
+    h3 How to use Grunt?
+    ul
+      li Installing
+      li All we need to know to use Grunt
+      li Tasks deep dive
+      li Magic config attributes
+      li Project scaffolding
+
+
+section
+  section
+    h2 What?
+    h4 Grunt in a nutshell
+
+  section
+    h2 Grunt in a nutshell
+    ul
+      li Javascript task runner
+      li Runs on command line
+      li Runs on node.js
+      li Rich plugin system with npm
+
+  section
+    pre
+      code grunt build:dev
+
+
+section
+  h2 Why?
+  h4 Why use task runners... why Grunt?
+
+
+section
+  section
+    h2 Why a task runner?
+
+  section
+    blockquote.
+      &ldquo; Invest time once up front to do the right thing, consistently do the right thing without any time cost.&rdquo;
+    p
+      small hmmm... me
+   
+  section
+    blockquote.
+      &ldquo; Create machine-readable documentation that make your workflow reproducible.&rdquo;
+    p
+      small Why use make - Mike Bostock
+   
+
+section
+  section
+    h2 Why a JavaScript task runner?
+
+  section
+    p Invite front-end devs
+    pre
+      code grunt -h
+
+  section
+    p So we can use npm
+
+
+section
+  section
+    h2 Why Grunt?
+
+
+  section
+    h2 Requirements
+    ol
+      li Don't want to write all code myself
+      li Easy to use
+      li Future proof
+      li Everybody else uses it
+
+
+  section
+    h3 Don't want to write all code myself
+    p npm modules as grunt plugins
+
+
+  section
+    h3 Easy to use
+    p Great (documented) API, great docs, great plugins to read the source from, posts, presentations...
+
+
+  section
+    h3 Future proof
+    ul
+      li Momentum
+      li Roadmap
+      li Great people
+      li Great open-source projects and organizations
+
+    
+  section
+    h3 Everybody is using it
+    p We're working on that!
+
+
+section
+  section
+    h2 So why again?
+
+  section
+    ul
+      li Faster
+      li Better
+      li More fun
+
+
+section
+  h2 How?
+  h4 Let Grunt do the gruntwork
+
+
+section
+  section
+    h2 Act 1
+    p
+      small Installing Grunt
+
+  section
+    h3 Dependencies
+    ul
+      li node.js
+      li npm
+
+  section
+    h3 Grunt
+    p grunt & grunt-cli
+
+  section
+    pre
+      code npm install -g grunt-cli
+
+
+section
+  section
+    h2 Act 2
+    p
+      small All we <em>need</em> to know to use Grunt
+
+  section
+    pre
+      code.
+        package.json
+        Gruntfile.js
+
+  section
+    h3 package.json
+
+  section
+    pre
+      code.
+        npm install grunt --save-dev
+
+  section
+    h3 Gruntfile.js
+
+  section
+    h3 3 parts
+    ol
+      li Configuring tasks
+      li Loading plugins and tasks
+      li Defining task aliases and custom tasks
+
+  section
+    pre
+      code.
+        module.exports = function(grunt) {}
+
+  section
+    pre
+      code.
+        grunt.initConfig({
+            pkg: grunt.file.readJSON('package.json'),
+            // ...
+        });
+
+  section
+    pre
+      code.
+        grunt.loadNpmTasks('grunt-jade');
+
+  section
+    pre
+      code.
+        grunt.registerTask('name', 'description', [taskList]);
+
+  section
+    h3 Execute tasks
+
+  section
+    pre
+      code.
+        grunt
+
+  section
+    pre
+      code.
+        grunt jade:dev
+
+  section
+    pre
+      code.
+        grunt -h
+
+  section
+    h3 That's all there is to it
+
+
+
+
+
+section
+  section
+    h2 Act 3
+    p
+      small Tasks deep dive
+
+  section
+    h3 Types of tasks
+
+  section
+    h4 Alias task
+    pre
+      code.
+        grunt.registerTask('name', 'description', [tasklist]);
+
+  section
+    h4 Function task
+    pre
+      code.
+        grunt.registerTask('name', 'description', function);
+
+  section
+    h4 Multi task
+    pre
+      code.
+        grunt.task.registerMultiTask('name', 'description', function);
+
+  section
+    h3 Access data from within task
+
+  section
+    h4 Arguments
+    p
+      small Arguments object + named arguments +
+    pre
+      code.
+        this.nameArgs
+        this.args
+        this.flags
+
+  section
+    h4 this
+    pre
+      code.
+        { 
+          nameArgs: 'introspect:one:two',
+          name: 'introspect',
+          args: [ 'one', 'two' ],
+          flags: { one: true, two: true },
+          async: [Function],
+          errorCount: [Getter],
+          requires: [Function],
+          requiresConfig: [Function],
+          options: [Function] 
+        }
+
+  section
+    h4 Config
+    pre
+      code.
+        grunt.config.get(this.name);
+
+  section
+    h4 Package info
+    pre
+      code.
+        grunt.config.get('pkg');
+
+  section
+    h4 Options
+    pre
+      code.
+        grunt.option('env');
+        grunt.option.flags();
+
+  section
+    h3 Pass info to task
+
+  section
+    ul
+      li Make it part of configuration object, configure per target
+      li Add it to package.json
+      li Pass as arguments
+      li Pass as options
+
+  section
+    h3 Async tasks
+
+  section
+    pre
+      code.
+        var done = this.async();
+        done();
+
+  section
+    h3 Refactor, load tasks from own files
+
+  section
+    pre
+      code.
+        module.exports = function(grunt) {
+          grunt.registerMultiTask(){}    
+        }
+        
+        grunt.task.loadTasks('tasks');
+
+section
+  section
+    h2 Act 4
+    p
+      small Magic config attributes
+
+  section
+    pre
+      code.
+        grunt.initConfig({
+          watch: {
+            main: {
+              files: [ 'jade/*', 'Gruntfile.js', 'js/reveal.js', 'css/reveal.css' ],
+              tasks: 'default'
+            },
+            theme: {
+              files: [ 'css/theme/source/*.scss', 'css/theme/template/*.scss' ],
+              tasks: 'themes'
+            }
+          }
+        });
+
+  section
+    h3 options
+
+  section
+    pre
+      code.
+        grunt.initConfig({
+          jade: {
+            html: {
+              options: {
+                client: false,
+                pretty: true
+              }
+            }
+          }
+        });
+
+  section
+    h3 files
+
+  section
+    h4 Compact format
+    pre
+      code.
+        grunt.initConfig({
+          concat: {
+            one: {
+              src: ['src/bb.js', 'src/bbb.js'],
+              dest: 'dest/b.js',
+            },
+          },
+        });
+
+  section
+    h4 File object format
+    pre
+      code.
+        grunt.initConfig({
+          cat: {
+            one: {
+              files: {
+                'dest/a.js': ['src/aa.js', 'src/aaa.js'],
+                'dest/a1.js': ['src/aa1.js', 'src/aaa1.js'],
+              }
+            }
+          }
+        });
+
+  section
+    h4 File array format
+    pre
+      code.
+        grunt.initConfig({
+          cat: {
+            one: {
+              files: [
+                {src: ['src/aa.js', 'src/aaa.js'], dest: 'dest/a.js'},
+                {src: ['src/aa1.js', 'src/aaa1.js'], dest: 'dest/a1.js'},
+              ],
+            }
+          }
+        });
+
+  section
+    h4 Other file attributes
+    pre
+      code.
+        filter
+        expand
+        dot
+
+    p <a href="http://gruntjs.com/configuring-tasks">gruntjs.com/configuring-tasks</a>
+
+  section
+    h4 File array format
+    pre
+      code.
+        this.files.forEach(function(file) {
+            var output = file.src.map(function(filepath) {
+                return grunt.file.read(filepath);
+            }).join('\n');
+              grunt.file.write(file.dest, output);
+        });
+
+  section
+    h4 So?
+    ul
+      li Know not all attributes are created equal
+      li Only use “magic attributes” for their magic
+
+
+section
+  section
+    h2 Act 5
+    p
+      small Project scaffolding
+
+  section
+    h3 Start new project...
+
+  section
+    ul
+      li Use `jade`
+      li Use `sass`
+      li Have a `package.json`
+      li Have an `index.html` ready
+      li Have `jQuery` ready to use
+      li Serve files from a server in case I want to do GET requests
+      li Watch for changes in jade/sass to automatically compile
+      li Live reload the page served on changes
+
+  section
+    ul
+      li Add a `README.md`
+      li Add `.gitignore` to not track compiled files/node modules
+      li Add `.jshintrc` for linting configuration
+      li Add `.gitattributes` to prevent line ending troubles
+
+
+  section
+    h3 grunt-init
+
+  section
+    pre
+      code.
+        npm install -g grunt-init
+
+  section
+    h3 Project templates
+
+
+  section
+    pre
+      code.
+        ~/.grunt-init/
+
+  section
+    pre
+      code.
+        git clone git@github.com:toonketels/grunt-init-tk-front.git ~/.grunt-init/tk-front
+
+  section
+    pre
+      code.
+        grunt-init
+
+        grunt-init tk-front
+
+  section
+    h3 prompt
+
+
+  section
+    pre
+      code.
+        ~/.grunt-init/defaults.json
+
+  section
+    h3 Create your own
+
+  section
+    pre
+      code.
+        my-template/template.js
+        my-template/rename.json
+        my-template/root/
+
+  section
+    h3 root
+
+  section
+    h3 rename.json
+
+  section
+    h3 template.js
+
+  section
+    h3 Scaffolding
+    p Not just for js projects.
+
+section
+  section
+    h2 Recap
+
+  section
+    ul
+      li What is grunt?
+      li Why use grunt?
+      li How to use Grunt?
+
+  section
+    h3 How to use Grunt?
+    ul
+      li Installing
+      li All we need to know to use Grunt
+      li Tasks deep dive
+      li Magic config attributes
+      li Project scaffolding
+
+
+
+section
+  h2 Q&A
+  h4 Questions...
+
+
+section
+  h2 Thanks
+  h4 Anthony Ringoet - Toon Ketels
+  p.
+    <small><a href="http://twitter.com/mylittletony">@mylittletony</a> - <a href="http://twitter.com/toonketels">@toonketels</a></small>
+  p.
+    <small>Grab the <a href="https://github.com/toonketels/grunt-presentation-demo">demo code</a> from github
+
+
+include includes/footer.html
