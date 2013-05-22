@@ -473,3 +473,135 @@ And now for the labels
         .rangeBands([0, chart_d.height], 0.1);
 
 We might need to change the padding.
+
+
+## Animate
+
+Everything is so static...
+
+One of the nice things of d3.js are the animations. So let's jump into it.
+
+First, animate the bars' width
+
+    chart.selectAll('rect')
+        .data( data )
+      .enter().append('rect')
+        .attr('x', 0)
+        .attr('width', 0)
+        .attr('y', function(d, i) { return y(d.name) })
+        .attr('height', y.rangeBand)
+        .style('fill', '#333')
+      .transition()
+        .duration(600)
+        .attr('width', function(d, i) { return x(d.value) })
+
+Chain a color transition.
+
+    chart.selectAll('rect')
+        .data( data )
+      .enter().append('rect')
+        .attr('x', 0)
+        .attr('width', 0)
+        .attr('y', function(d, i) { return y(d.name) })
+        .attr('height', y.rangeBand)
+        .style('fill', '#333')
+      .transition()
+        .duration(600)
+        .attr('width', function(d, i) { return x(d.value) })
+      .transition()
+        .duration(400)
+        .style('fill', 'black')
+
+Animation can be done on about anything. Axis too...
+
+    axis_y = chart.append('g')
+        .attr('class', 'axis y')
+      .transition()
+        .delay(800)
+        .duration(800)
+        .call(axis_y_f);
+
+## Timely updates
+
+Our data changes every x seconds... we better update the chart.
+
+We've changed the data source so that:
+* drawchart gets called once, the first time
+* every x seconds, updateChart gets called with new data
+
+
+Asign the bars to a var so we can access it from another function.
+
+    bars = chart.selectAll('rect')
+        .data( data )
+      .enter().append('rect')
+        .attr('x', 0)
+        .attr('width', 0)
+        .attr('y', function(d, i) { return y(d.name) })
+        .attr('height', y.rangeBand)
+        .style('fill', '#333');
+  
+    bars
+      .transition()
+        .duration(600)
+        .attr('width', function(d, i) { return x(d.value) })
+      .transition()
+        .duration(400)
+        .style('fill', 'black')
+
+Our update function.
+
+    function updateChart(data) {
+    
+      bars
+          .data(data)
+        .transition()
+          .duration(600)
+          .attr('width', function(d, i) { return x(d.value) });
+    
+    }
+
+Animations make the updates easier to follow.
+
+## Updating the entire axis
+
+What's with all that unused whitespace?
+
+It's not only the chart content that can be updated.
+
+To update the axis, just update the scale and call something on the axis
+again.
+
+    function updateChart(data) {
+  
+      // Set the current overal max;
+      max_overall = d3.max(data, function(d, i) { return d.value });
+  
+      // Update the bars with new data
+      bars
+          .data(data)
+        .transition()
+          .delay(800)
+          .duration(600)
+          .attr('width', function(d, i) { return x(d.value) });
+  
+      // Update the x scale
+      x.domain([0, max_overall])
+  
+      // Update x axis
+      axis_x
+        .transition()
+          .duration(600)
+          .call(axis_x_f);
+  
+      // Update the bars
+      bars
+        .transition()
+          .duration(600)
+          .attr('width', function(d, i) { return x(d.value) });
+    }
+
+
+Done
+
+Recap
