@@ -1,7 +1,7 @@
 section
   section
     h2 Animation
-    h4 10. Why is stuff not moving?
+    blockquote Why is stuff not moving?
 
   section
     h3 Animate bars' width
@@ -49,3 +49,22 @@ section
             .delay(800)
             .duration(800)
             .call(axis_y_f);
+
+  section
+    h3 Got it?
+    ul
+      li.fragment To animate use <code>.transition()</code>
+      li.fragment Transitions can have <code>.delay(500)</code> and <code>duration(500)</code>
+      li.fragment Change a attribute/style... before and after transition, d3 will do the rest
+
+
+  section 
+    h3 What we have so far
+    ul
+      li Insert SVG container (canvas)
+      li Create new elements via data binding
+      li Use linear scale to convert width
+      li Use ordinal scale to convert Y value
+      li Display labels through axis
+      li Display ticks through axis
+      li.fragment Animate the bars

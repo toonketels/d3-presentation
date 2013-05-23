@@ -758,7 +758,7 @@
 <section>
   <section>
     <h2>Animation</h2>
-    <h4>10. Why is stuff not moving?</h4>
+    <blockquote>Why is stuff not moving?</blockquote>
   </section>
   <section>
     <h3>Animate bars' width</h3>
@@ -804,7 +804,28 @@
         .transition()
             .delay(800)
             .duration(800)
-            .call(axis_y_f);</code></pre>
+            .call(axis_y_f);
+            </code></pre>
+  </section>
+  <section>
+    <h3>Got it?</h3>
+    <ul>
+      <li class="fragment">To animate use <code>.transition()</code></li>
+      <li class="fragment">Transitions can have <code>.delay(500)</code> and <code>duration(500)</code></li>
+      <li class="fragment">Change a attribute/style... before and after transition, d3 will do the rest</li>
+    </ul>
+  </section>
+  <section> 
+    <h3>What we have so far</h3>
+    <ul>
+      <li>Insert SVG container (canvas)</li>
+      <li>Create new elements via data binding</li>
+      <li>Use linear scale to convert width</li>
+      <li>Use ordinal scale to convert Y value</li>
+      <li>Display labels through axis</li>
+      <li>Display ticks through axis</li>
+      <li class="fragment">Animate the bars</li>
+    </ul>
   </section>
 </section>
 <section>
