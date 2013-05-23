@@ -1,13 +1,13 @@
 section
   section
     h2 Labels and axis
-    h4 7. How do we create labels?
+    blockquote How do we create labels?
 
   section
-    h4 Labels are automatically created by the axis.
+    h3 Labels are automatically created by the axis.
 
   section
-    h2 Creating axis
+    h3 Creating axis
     h4.fragment Creating axis is a two step process
     ul.fragment
       li axis creator function
@@ -38,3 +38,22 @@ section
             .orient('left')
             .tickPadding(30)
             .tickSize(0, 0, 0);
+
+  section
+    h2 Got it?
+    ul
+      li.fragment First we create an axis with <code>d3.svg.axis()</code>
+      li.fragment We use to scale so it knows what to draw
+      li.fragment We can set other attributes to "tune" its display
+      li.fragment Finally, draw it by appending group <code>chart.append('g')</code>
+      li.fragment And call the creator function <code>.call(axis_y_f)</code>
+
+
+  section 
+    h3 What we have so far
+    ul
+      li Insert SVG container (canvas)
+      li Create new elements via data binding
+      li Use linear scale to convert width
+      li Use ordinal scale to convert Y value
+      li.fragment Display labels through axis

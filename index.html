@@ -566,13 +566,13 @@
 <section>
   <section>
     <h2>Labels and axis</h2>
-    <h4>7. How do we create labels?</h4>
+    <blockquote>How do we create labels?</blockquote>
   </section>
   <section>
-    <h4>Labels are automatically created by the axis.</h4>
+    <h3>Labels are automatically created by the axis.</h3>
   </section>
   <section>
-    <h2>Creating axis</h2>
+    <h3>Creating axis</h3>
     <h4 class="fragment">Creating axis is a two step process</h4>
     <ul class="fragment">
       <li>axis creator function</li>
@@ -602,7 +602,28 @@
             .scale(y)
             .orient('left')
             .tickPadding(30)
-            .tickSize(0, 0, 0);</code></pre>
+            .tickSize(0, 0, 0);
+            </code></pre>
+  </section>
+  <section>
+    <h2>Got it?</h2>
+    <ul>
+      <li class="fragment">First we create an axis with <code>d3.svg.axis()</code></li>
+      <li class="fragment">We use to scale so it knows what to draw</li>
+      <li class="fragment">We can set other attributes to "tune" its display</li>
+      <li class="fragment">Finally, draw it by appending group <code>chart.append('g')</code></li>
+      <li class="fragment">And call the creator function <code>.call(axis_y_f)</code></li>
+    </ul>
+  </section>
+  <section> 
+    <h3>What we have so far</h3>
+    <ul>
+      <li>Insert SVG container (canvas)</li>
+      <li>Create new elements via data binding</li>
+      <li>Use linear scale to convert width</li>
+      <li>Use ordinal scale to convert Y value</li>
+      <li class="fragment">Display labels through axis</li>
+    </ul>
   </section>
 </section>
 <section>
