@@ -1,10 +1,10 @@
 section
   section
     h2 Real labels
-    h4 9. Should we display what the values represent as label?
+    blockquote Should we display what the values represent as label?
 
   section
-    h2 Change the data data source
+    h3 Change the data data source
     pre.fragment
       code.
         var data = [{value: 26009896, name: "angular.js"},
@@ -17,24 +17,58 @@ section
 
   section
     h3 Update with data accessor functions
+
+  section
+    pre
+      code.
+        max_overall = d3.max(data),
+
     pre.fragment
       code.
-        max_overall = d3.max(data, function(d, i) { return d.value }),
-    
+        max_overall = d3.max(data, function(d, i) { return d.value })
+
+  section
+    pre
+      code.
+        .attr('width', function(d, i) { return x(d.value) })
+   
     pre.fragment
       code.
-        chart.selectAll('rect')
-            .data( data )
-          .enter().append('rect')
-            .attr('x', 0)
-            .attr('width', function(d, i) { return x(d.value) })
-            .attr('y', function(d, i) { return y(d.name) })
-            .attr('height', y.rangeBand);
+        .attr('width', function(d, i) { return x(d.value) })
+
 
   section
     h3 Same for our labels
     pre.fragment
       code.
-        y = d3.scale.ordinal()
-            .domain(data.map(function(d, i){ return d.name }))
-            .rangeBands([0, chart_d.height], 0.1); 
+        .domain(data)
+
+    pre.fragment
+      code.
+        .domain(data.map(function(d, i){ return d.name }))
+
+  section
+    pre
+      code.
+        .attr('height', y)
+
+    pre.fragment
+      code.
+        .attr('height', function(d, i) { return y(d.name) })
+
+  section
+    h3 Got it?
+    ul
+      li.fragment To use real labels they need to be in the data source
+      li.fragment We use <em>data accessor functions</em> to tell d3 what attributes to use
+
+
+  section 
+    h3 What we have so far
+    ul
+      li Insert SVG container (canvas)
+      li Create new elements via data binding
+      li Use linear scale to convert width
+      li Use ordinal scale to convert Y value
+      li Display labels through axis
+      li Display ticks through axis

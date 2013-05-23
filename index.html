@@ -685,10 +685,10 @@
 <section>
   <section>
     <h2>Real labels</h2>
-    <h4>9. Should we display what the values represent as label?</h4>
+    <blockquote>Should we display what the values represent as label?</blockquote>
   </section>
   <section>
-    <h2>Change the data data source</h2>
+    <h3>Change the data data source</h3>
     <pre class="fragment"><code>
         var data = [{value: 26009896, name: "angular.js"},
                     {value: 179804755,  name: "backbone.js"},
@@ -701,25 +701,58 @@
   </section>
   <section>
     <h3>Update with data accessor functions</h3>
-    <pre class="fragment"><code>
-        max_overall = d3.max(data, function(d, i) { return d.value }),
+  </section>
+  <section>
+    <pre><code>
+        max_overall = d3.max(data),
         </code></pre>
     <pre class="fragment"><code>
-        chart.selectAll('rect')
-            .data( data )
-        .enter().append('rect')
-            .attr('x', 0)
-            .attr('width', function(d, i) { return x(d.value) })
-            .attr('y', function(d, i) { return y(d.name) })
-            .attr('height', y.rangeBand);
-            </code></pre>
+        max_overall = d3.max(data, function(d, i) { return d.value })
+        </code></pre>
+  </section>
+  <section>
+    <pre><code>
+        .attr('width', function(d, i) { return x(d.value) })
+        </code></pre>
+    <pre class="fragment"><code>
+        .attr('width', function(d, i) { return x(d.value) })
+        
+        </code></pre>
   </section>
   <section>
     <h3>Same for our labels</h3>
     <pre class="fragment"><code>
-        y = d3.scale.ordinal()
-            .domain(data.map(function(d, i){ return d.name }))
-            .rangeBands([0, chart_d.height], 0.1); </code></pre>
+        .domain(data)
+        </code></pre>
+    <pre class="fragment"><code>
+        .domain(data.map(function(d, i){ return d.name }))
+        </code></pre>
+  </section>
+  <section>
+    <pre><code>
+        .attr('height', y)
+        </code></pre>
+    <pre class="fragment"><code>
+        .attr('height', function(d, i) { return y(d.name) })
+        </code></pre>
+  </section>
+  <section>
+    <h3>Got it?</h3>
+    <ul>
+      <li class="fragment">To use real labels they need to be in the data source</li>
+      <li class="fragment">We use <em>data accessor functions</em> to tell d3 what attributes to use</li>
+    </ul>
+  </section>
+  <section> 
+    <h3>What we have so far</h3>
+    <ul>
+      <li>Insert SVG container (canvas)</li>
+      <li>Create new elements via data binding</li>
+      <li>Use linear scale to convert width</li>
+      <li>Use ordinal scale to convert Y value</li>
+      <li>Display labels through axis</li>
+      <li>Display ticks through axis</li>
+    </ul>
   </section>
 </section>
 <section>
