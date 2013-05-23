@@ -20,7 +20,7 @@ section
     h3 A scale convert some input into some output
     pre.fragment
       code.
-       attr('width', function(d, i){ return chart_d.width * (d/max_overall) })
+        attr('width', function(d, i){ return chart_d.width * (d/max_overall) })
     pre.fragment
       code.
         width:  data => pixels
@@ -28,7 +28,7 @@ section
   section
     h3 Input domain
     pre.fragment
-      code
+      code.
         var data = [26009896, 
                    179804755, 
                    494478797, 
@@ -40,7 +40,7 @@ section
   section
     h3 Output
     pre.fragment
-      code
+      code.
         <rect x="0" width="5" y="0" height="50"></rect>
         <rect x="0" width="31" y="70" height="50"></rect>
         <rect x="0" width="86" y="140" height="50"></rect>
@@ -52,7 +52,7 @@ section
   section
     h3 Conversion
     pre.fragment
-      code
+      code.
         26009896           =>              5
         179804755          =>             31
         494478797          =>             86
@@ -64,7 +64,7 @@ section
   section
     h3 Scale function
     pre.fragment
-      code
+      code.
         var width = scaleFunc(179804755)     // 31
 
   section
