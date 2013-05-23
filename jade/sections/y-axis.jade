@@ -1,0 +1,37 @@
+section
+  section
+    h2 Ticks
+    h4 8. How do we create ticks?
+
+  section
+    h4 Ticks are automatically created by the axis.
+
+  section
+    h2 Same story
+    pre.fragment
+      code.
+        axis_x_f = d3.svg.axis()
+            .scale(x)
+            .orient('top')
+            .tickPadding(10)
+            .ticks(5)
+            .tickSize(chart_d.height, chart_d.height, 0)
+    
+    pre.fragment
+      code.
+        axis_x = chart.append('g')
+            .attr('class', 'axis x')
+            .attr( 'transform', 'translate('+ 0 +', '+ chart_d.height +')' )
+            .call(axis_x_f);
+
+  section
+    h3 Add subticks
+    pre.fragment
+      code.
+        axis_x_f = d3.svg.axis()
+            .scale(x)
+            .orient('top')
+            .tickPadding(10)
+            .ticks(5)
+            .tickSize(chart_d.height, chart_d.height, 0)
+            .tickSubdivide(2)

@@ -1,0 +1,87 @@
+section
+  section
+    h2 Ordinal scales
+    h4 6. I hate the math in our code, can't we use scales for that?
+
+  section
+    h2 Ordinal scales
+    pre
+      code.
+        y:  data-item => pixels
+
+  section
+    h3 Input domain
+    pre.fragment
+      code.
+        var data = [26009896, 
+                   179804755, 
+                   494478797, 
+                  2718505888, 
+                  1765686465, 
+                  4015692380, 
+                  3611612096];
+
+  section
+    h3 Output
+    pre.fragment
+      code.
+        <rect x="0" width="5" y="0" height="50"></rect>
+        <rect x="0" width="31" y="70" height="50"></rect>
+        <rect x="0" width="86" y="140" height="50"></rect>
+        <rect x="0" width="474" y="210" height="50"></rect>
+        <rect x="0" width="308" y="280" height="50"></rect>
+        <rect x="0" width="700" y="350" height="50"></rect>
+        <rect x="0" width="630" y="420" height="50"></rect>
+
+  section
+    h3 Conversion
+    pre.fragment
+      code.
+        26009896           =>              0
+        179804755          =>             70
+        494478797          =>            140
+        2718505888         =>            210
+        1765686465         =>            280
+        4015692380         =>            350
+        3611612096         =>            420
+
+  section
+    h3 Scale function
+    pre.fragment
+      code.
+        var y = someOtherScaleFunc(179804755)     // 70
+
+  section
+    h2 How to create a scalefunction?
+
+  section
+    h3 First, create scale
+    pre.fragment
+      code.
+        y = d3.scale.ordinal()
+          .domain(data)
+          .rangeBands([0, chart_d.height]);
+
+  section
+    h3 Use it
+    pre.fragment
+      code.
+        chart.selectAll('rect')
+            .data( data )
+          .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', x)
+            .attr('y', y)
+            .attr('height', 50);
+
+  section
+    h3 Also to get the height
+    pre.fragment
+      code.
+        chart.selectAll('rect')
+            .data( data )
+          .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', x)
+            .attr('y', y)
+            .attr('height', y.rangeBand);

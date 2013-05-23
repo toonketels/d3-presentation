@@ -1,0 +1,40 @@
+section
+  section
+    h2 Labels and axis
+    h4 7. How do we create labels?
+
+  section
+    h4 Labels are automatically created by the axis.
+
+  section
+    h2 Creating axis
+    h4.fragment Creating axis is a two step process
+    ul.fragment
+      li axis creator function
+      li draw axis
+
+  section
+    h3 Axis creator function
+    pre.fragment
+      code.
+        axis_y_f = d3.svg.axis()
+            .scale(y)
+            .orient('left')
+
+  section
+    h3 Draw it
+    pre.fragment
+      code.
+        axis_y = chart.append('g')
+            .attr('class', 'axis y')
+            .call(axis_y_f);
+
+  section
+    h3 Make it prettier
+    pre.fragment
+      code.
+        axis_y_f = d3.svg.axis()
+            .scale(y)
+            .orient('left')
+            .tickPadding(30)
+            .tickSize(0, 0, 0);

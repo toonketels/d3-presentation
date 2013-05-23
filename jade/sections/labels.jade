@@ -1,0 +1,40 @@
+section
+  section
+    h2 Real labels
+    h4 9. Should we display what the values represent as label?
+
+  section
+    h2 Change the data data source
+    pre.fragment
+      code.
+        var data = [{value: 26009896, name: "angular.js"},
+                    {value: 179804755,  name: "backbone.js"},
+                    {value: 494478797,  name: "batman.js"},
+                    {value: 2718505888,  name: "ember.js"},
+                    {value: 1765686465,  name: "knockout.js"},
+                    {value: 4015692380,  name: "sammy.js"},
+                    {value: 3611612096, name: "spine.js"}];
+
+  section
+    h3 Update with data accessor functions
+    pre.fragment
+      code.
+        max_overall = d3.max(data, function(d, i) { return d.value }),
+    
+    pre.fragment
+      code.
+        chart.selectAll('rect')
+            .data( data )
+          .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', function(d, i) { return x(d.value) })
+            .attr('y', function(d, i) { return y(d.name) })
+            .attr('height', y.rangeBand);
+
+  section
+    h3 Same for our labels
+    pre.fragment
+      code.
+        y = d3.scale.ordinal()
+            .domain(data.map(function(d, i){ return d.name }))
+            .rangeBands([0, chart_d.height], 0.1); 

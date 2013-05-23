@@ -1,0 +1,51 @@
+section
+  section
+    h2 Animation
+    h4 10. Why is stuff not moving?
+
+  section
+    h3 Animate bars' width
+    pre.fragment
+      code.
+        chart.selectAll('rect')
+            .data( data )
+          .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', 0)
+            .attr('y', function(d, i) { return y(d.name) })
+            .attr('height', y.rangeBand)
+            .style('fill', '#333')
+          .transition()
+            .duration(600)
+            .attr('width', function(d, i) { return x(d.value) })
+
+  section
+    h3 Chain a color transition
+    pre.fragment
+      code.
+        chart.selectAll('rect')
+            .data( data )
+          .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', 0)
+            .attr('y', function(d, i) { return y(d.name) })
+            .attr('height', y.rangeBand)
+            .style('fill', '#333')
+          .transition()
+            .duration(600)
+            .attr('width', function(d, i) { return x(d.value) })
+          .transition()
+            .duration(400)
+            .style('fill', 'black')
+
+  section
+    h3 Animation can be done on about anything
+    h3.fragment Axis too...
+    pre.fragment
+      code.
+        axis_y = chart.append('g')
+            .attr('class', 'axis y')
+          .transition()
+            .delay(800)
+            .duration(800)
+            .call(axis_y_f);

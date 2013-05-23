@@ -577,6 +577,265 @@
   </section>
 </section>
 <section>
+  <section>
+    <h2>Ordinal scales</h2>
+    <h4>6. I hate the math in our code, can't we use scales for that?</h4>
+  </section>
+  <section>
+    <h2>Ordinal scales</h2>
+    <pre><code>
+        y:  data-item => pixels
+        </code></pre>
+  </section>
+  <section>
+    <h3>Input domain</h3>
+    <pre class="fragment"><code>
+        var data = [26009896, 
+                   179804755, 
+                   494478797, 
+        2718505888, 
+                  1765686465, 
+                  4015692380, 
+                  3611612096];
+                  </code></pre>
+  </section>
+  <section>
+    <h3>Output</h3>
+    <pre class="fragment"><code>
+        <rect x="0" width="5" y="0" height="50"></rect>
+        <rect x="0" width="31" y="70" height="50"></rect>
+        <rect x="0" width="86" y="140" height="50"></rect>
+        <rect x="0" width="474" y="210" height="50"></rect>
+        <rect x="0" width="308" y="280" height="50"></rect>
+        <rect x="0" width="700" y="350" height="50"></rect>
+        <rect x="0" width="630" y="420" height="50"></rect>
+        </code></pre>
+  </section>
+  <section>
+    <h3>Conversion</h3>
+    <pre class="fragment"><code>
+        26009896           =>              0
+        179804755          =>             70
+        494478797          =>            140
+        2718505888         =>            210
+        1765686465         =>            280
+        4015692380         =>            350
+        3611612096         =>            420
+        </code></pre>
+  </section>
+  <section>
+    <h3>Scale function</h3>
+    <pre class="fragment"><code>
+        var y = someOtherScaleFunc(179804755)     // 70
+        </code></pre>
+  </section>
+  <section>
+    <h2>How to create a scalefunction?</h2>
+  </section>
+  <section>
+    <h3>First, create scale</h3>
+    <pre class="fragment"><code>
+        y = d3.scale.ordinal()
+          .domain(data)
+          .rangeBands([0, chart_d.height]);
+          </code></pre>
+  </section>
+  <section>
+    <h3>Use it</h3>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', x)
+            .attr('y', y)
+            .attr('height', 50);
+            </code></pre>
+  </section>
+  <section>
+    <h3>Also to get the height</h3>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', x)
+            .attr('y', y)
+            .attr('height', y.rangeBand);</code></pre>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Labels and axis</h2>
+    <h4>7. How do we create labels?</h4>
+  </section>
+  <section>
+    <h4>Labels are automatically created by the axis.</h4>
+  </section>
+  <section>
+    <h2>Creating axis</h2>
+    <h4 class="fragment">Creating axis is a two step process</h4>
+    <ul class="fragment">
+      <li>axis creator function</li>
+      <li>draw axis</li>
+    </ul>
+  </section>
+  <section>
+    <h3>Axis creator function</h3>
+    <pre class="fragment"><code>
+        axis_y_f = d3.svg.axis()
+            .scale(y)
+            .orient('left')
+            </code></pre>
+  </section>
+  <section>
+    <h3>Draw it</h3>
+    <pre class="fragment"><code>
+        axis_y = chart.append('g')
+            .attr('class', 'axis y')
+            .call(axis_y_f);
+            </code></pre>
+  </section>
+  <section>
+    <h3>Make it prettier</h3>
+    <pre class="fragment"><code>
+        axis_y_f = d3.svg.axis()
+            .scale(y)
+            .orient('left')
+            .tickPadding(30)
+            .tickSize(0, 0, 0);</code></pre>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Ticks</h2>
+    <h4>8. How do we create ticks?</h4>
+  </section>
+  <section>
+    <h4>Ticks are automatically created by the axis.</h4>
+  </section>
+  <section>
+    <h2>Same story</h2>
+    <pre class="fragment"><code>
+        axis_x_f = d3.svg.axis()
+            .scale(x)
+            .orient('top')
+            .tickPadding(10)
+            .ticks(5)
+            .tickSize(chart_d.height, chart_d.height, 0)
+            </code></pre>
+    <pre class="fragment"><code>
+        axis_x = chart.append('g')
+            .attr('class', 'axis x')
+            .attr( 'transform', 'translate('+ 0 +', '+ chart_d.height +')' )
+            .call(axis_x_f);
+            </code></pre>
+  </section>
+  <section>
+    <h3>Add subticks</h3>
+    <pre class="fragment"><code>
+        axis_x_f = d3.svg.axis()
+            .scale(x)
+            .orient('top')
+            .tickPadding(10)
+            .ticks(5)
+            .tickSize(chart_d.height, chart_d.height, 0)
+            .tickSubdivide(2)</code></pre>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Real labels</h2>
+    <h4>9. Should we display what the values represent as label?</h4>
+  </section>
+  <section>
+    <h2>Change the data data source</h2>
+    <pre class="fragment"><code>
+        var data = [{value: 26009896, name: "angular.js"},
+                    {value: 179804755,  name: "backbone.js"},
+                    {value: 494478797,  name: "batman.js"},
+                    {value: 2718505888,  name: "ember.js"},
+                    {value: 1765686465,  name: "knockout.js"},
+                    {value: 4015692380,  name: "sammy.js"},
+                    {value: 3611612096, name: "spine.js"}];
+                    </code></pre>
+  </section>
+  <section>
+    <h3>Update with data accessor functions</h3>
+    <pre class="fragment"><code>
+        max_overall = d3.max(data, function(d, i) { return d.value }),
+        </code></pre>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', function(d, i) { return x(d.value) })
+            .attr('y', function(d, i) { return y(d.name) })
+            .attr('height', y.rangeBand);
+            </code></pre>
+  </section>
+  <section>
+    <h3>Same for our labels</h3>
+    <pre class="fragment"><code>
+        y = d3.scale.ordinal()
+            .domain(data.map(function(d, i){ return d.name }))
+            .rangeBands([0, chart_d.height], 0.1); </code></pre>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Animation</h2>
+    <h4>10. Why is stuff not moving?</h4>
+  </section>
+  <section>
+    <h3>Animate bars' width</h3>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', 0)
+            .attr('y', function(d, i) { return y(d.name) })
+            .attr('height', y.rangeBand)
+            .style('fill', '#333')
+        .transition()
+            .duration(600)
+            .attr('width', function(d, i) { return x(d.value) })
+            </code></pre>
+  </section>
+  <section>
+    <h3>Chain a color transition</h3>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', 0)
+            .attr('y', function(d, i) { return y(d.name) })
+            .attr('height', y.rangeBand)
+            .style('fill', '#333')
+        .transition()
+            .duration(600)
+            .attr('width', function(d, i) { return x(d.value) })
+        .transition()
+            .duration(400)
+            .style('fill', 'black')
+            </code></pre>
+  </section>
+  <section>
+    <h3>Animation can be done on about anything</h3>
+    <h3 class="fragment">Axis too...</h3>
+    <pre class="fragment"><code>
+        axis_y = chart.append('g')
+            .attr('class', 'axis y')
+        .transition()
+            .delay(800)
+            .duration(800)
+            .call(axis_y_f);</code></pre>
+  </section>
+</section>
+<section>
   <h2>meta</h2>
 </section>
 <section>
