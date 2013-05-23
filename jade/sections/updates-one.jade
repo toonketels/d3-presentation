@@ -1,10 +1,10 @@
 section
   section
     h2 Timely updates
-    h4 11. How could we easily update our numbers?
+    blockquote How could we easily update our numbers?
 
   section
-    h4 Our data changes every x seconds... we better update the chart.
+    h3 Our data changes every x seconds... we better update the chart.
 
   section
     p We've changed the data source so that:
@@ -46,5 +46,22 @@ section
               .attr('width', function(d, i) { return x(d.value) });
         
         }
+
   section
-    p Animations make the updates easier to follow.
+    h3 Got it?
+    ul
+      li.fragment To update the chart, rebind the data via <code>.data( updated_data )</code>
+      li.fragment To redraw, actually call a method that will update the display like <code>.attr('width',...)</code>
+
+
+  section 
+    h3 What we have so far
+    ul
+      li Insert SVG container (canvas)
+      li Create new elements via data binding
+      li Use linear scale to convert width
+      li Use ordinal scale to convert Y value
+      li Display labels through axis
+      li Display ticks through axis
+      li Animate the bars
+      li.fragment Update the bars when data changes

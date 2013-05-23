@@ -1,7 +1,25 @@
 section
   section
     h2 Update the entire axis
-    h4 12. What's with all that unused whitespace?
+    blockquote What's with all that unused whitespace?
+
+  section
+    p Ask ourself: "What would need to change to update our axis?"
+
+  section
+    ul
+      li.fragment axis creator function
+      li.fragment scale function
+      li.fragment scale's input domain
+
+  section
+    pre
+      code.
+        .domain([0, 4000])
+
+    pre.fragment
+      code.
+        .domain([0, 2000])
 
   section
     p To update the axis, just <em>update the scale</em> and call something on the axis again.
@@ -31,3 +49,23 @@ section
             .delay(800)
             .duration(600)
             .attr('width', function(d, i) { return x(d.value) });
+
+  section
+    h3 Got it?
+    ul
+      li.fragment We can update anything
+      li.fragment Always ask: "For it to update, what needs to change?"
+      li.fragment Change that value and redraw
+
+  section 
+    h3 What we have so far
+    ul
+      li Insert SVG container (canvas)
+      li Create new elements via data binding
+      li Use linear scale to convert width
+      li Use ordinal scale to convert Y value
+      li Display labels through axis
+      li Display ticks through axis
+      li Animate the bars
+      li Update the bars when data changes
+      li.fragment Update the entire chart when data changes

@@ -831,10 +831,10 @@
 <section>
   <section>
     <h2>Timely updates</h2>
-    <h4>11. How could we easily update our numbers?</h4>
+    <blockquote>How could we easily update our numbers?</blockquote>
   </section>
   <section>
-    <h4>Our data changes every x seconds... we better update the chart.</h4>
+    <h3>Our data changes every x seconds... we better update the chart.</h3>
   </section>
   <section>
     <p>We've changed the data source so that:</p>
@@ -875,16 +875,52 @@
               .duration(600)
               .attr('width', function(d, i) { return x(d.value) });
               
-        }</code></pre>
+        }
+        </code></pre>
   </section>
   <section>
-    <p>Animations make the updates easier to follow.</p>
+    <h3>Got it?</h3>
+    <ul>
+      <li class="fragment">To update the chart, rebind the data via <code>.data( updated_data )</code></li>
+      <li class="fragment">To redraw, actually call a method that will update the display like <code>.attr('width',...)</code></li>
+    </ul>
+  </section>
+  <section> 
+    <h3>What we have so far</h3>
+    <ul>
+      <li>Insert SVG container (canvas)</li>
+      <li>Create new elements via data binding</li>
+      <li>Use linear scale to convert width</li>
+      <li>Use ordinal scale to convert Y value</li>
+      <li>Display labels through axis</li>
+      <li>Display ticks through axis</li>
+      <li>Animate the bars</li>
+      <li class="fragment">Update the bars when data changes</li>
+    </ul>
   </section>
 </section>
 <section>
   <section>
     <h2>Update the entire axis</h2>
-    <h4>12. What's with all that unused whitespace?</h4>
+    <blockquote>What's with all that unused whitespace?</blockquote>
+  </section>
+  <section>
+    <p>Ask ourself: "What would need to change to update our axis?"</p>
+  </section>
+  <section>
+    <ul>
+      <li class="fragment">axis creator function</li>
+      <li class="fragment">scale function</li>
+      <li class="fragment">scale's input domain</li>
+    </ul>
+  </section>
+  <section>
+    <pre><code>
+        .domain([0, 4000])
+        </code></pre>
+    <pre class="fragment"><code>
+        .domain([0, 2000])
+        </code></pre>
   </section>
   <section>
     <p>To update the axis, just <em>update the scale</em> and call something on the axis again.</p>
@@ -909,25 +945,35 @@
         .transition()
             .delay(800)
             .duration(600)
-            .attr('width', function(d, i) { return x(d.value) });</code></pre>
+            .attr('width', function(d, i) { return x(d.value) });
+            </code></pre>
+  </section>
+  <section>
+    <h3>Got it?</h3>
+    <ul>
+      <li class="fragment">We can update anything</li>
+      <li class="fragment">Always ask: "For it to update, what needs to change?"</li>
+      <li class="fragment">Change that value and redraw</li>
+    </ul>
+  </section>
+  <section> 
+    <h3>What we have so far</h3>
+    <ul>
+      <li>Insert SVG container (canvas)</li>
+      <li>Create new elements via data binding</li>
+      <li>Use linear scale to convert width</li>
+      <li>Use ordinal scale to convert Y value</li>
+      <li>Display labels through axis</li>
+      <li>Display ticks through axis</li>
+      <li>Animate the bars</li>
+      <li>Update the bars when data changes</li>
+      <li class="fragment">Update the entire chart when data changes</li>
+    </ul>
   </section>
 </section>
 <section>
   <h2>That's it.</h2>
 </section>
-<Section>
-  <h2>Recap</h2>
-  <ul>
-    <li>Inserted SVG element into DOM</li>
-    <li>Bound data with elements and use `enter()` to display them</li>
-    <li>Added margin to our main svg element with a `g`</li>
-    <li>Created scales to convert from input domain to output</li>
-    <li>Used scales to create axis which create labels</li>
-    <li>Used scales to create axis which create ticks</li>
-    <li>Animate items with `transition()`</li>
-    <li>Update data and use animation to update chart</li>
-  </ul>
-</Section>
 <section>
   <h2>Thanks</h2>
   <h4>Toon Ketels</h4>
