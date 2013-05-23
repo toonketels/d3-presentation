@@ -606,7 +606,7 @@
             </code></pre>
   </section>
   <section>
-    <h2>Got it?</h2>
+    <h3>Got it?</h3>
     <ul>
       <li class="fragment">First we create an axis with <code>d3.svg.axis()</code></li>
       <li class="fragment">We use to scale so it knows what to draw</li>
@@ -629,21 +629,21 @@
 <section>
   <section>
     <h2>Ticks</h2>
-    <h4>8. How do we create ticks?</h4>
+    <blockquote>How do we create those vertical lines?</blockquote>
   </section>
   <section>
-    <h4>Ticks are automatically created by the axis.</h4>
+    <h3>Ticks are automatically created by the axis.</h3>
   </section>
   <section>
-    <h2>Same story</h2>
+    <h3>Same story</h3>
     <pre class="fragment"><code>
         axis_x_f = d3.svg.axis()
             .scale(x)
-            .orient('top')
-            .tickPadding(10)
-            .ticks(5)
-            .tickSize(chart_d.height, chart_d.height, 0)
-            </code></pre>
+            .orient('top')</code></pre>
+    <pre class="fragment"><code>
+           .tickPadding(10)
+           .ticks(5)
+           .tickSize(chart_d.height, 0, 0)</code></pre>
     <pre class="fragment"><code>
         axis_x = chart.append('g')
             .attr('class', 'axis x')
@@ -660,7 +660,26 @@
             .tickPadding(10)
             .ticks(5)
             .tickSize(chart_d.height, chart_d.height, 0)
-            .tickSubdivide(2)</code></pre>
+            .tickSubdivide(2)
+            </code></pre>
+  </section>
+  <section>
+    <h3>Got it?</h3>
+    <ul>
+      <li class="fragment">We create axis just like before (create/draw)</li>
+      <li class="fragment">Just be sure we set a the tick size to charts height <code>tickSize(chart_d.height, chart_d.height, 0)</code></li>
+    </ul>
+  </section>
+  <section> 
+    <h3>What we have so far</h3>
+    <ul>
+      <li>Insert SVG container (canvas)</li>
+      <li>Create new elements via data binding</li>
+      <li>Use linear scale to convert width</li>
+      <li>Use ordinal scale to convert Y value</li>
+      <li>Display labels through axis</li>
+      <li class="fragment">Display ticks through axis</li>
+    </ul>
   </section>
 </section>
 <section>

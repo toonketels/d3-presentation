@@ -1,21 +1,23 @@
 section
   section
     h2 Ticks
-    h4 8. How do we create ticks?
+    blockquote How do we create those vertical lines?
 
   section
-    h4 Ticks are automatically created by the axis.
+    h3 Ticks are automatically created by the axis.
 
   section
-    h2 Same story
+    h3 Same story
     pre.fragment
       code.
         axis_x_f = d3.svg.axis()
             .scale(x)
             .orient('top')
-            .tickPadding(10)
-            .ticks(5)
-            .tickSize(chart_d.height, chart_d.height, 0)
+    pre.fragment
+      code
+        |    .tickPadding(10)
+        |    .ticks(5)
+        |    .tickSize(chart_d.height, 0, 0)
     
     pre.fragment
       code.
@@ -35,3 +37,20 @@ section
             .ticks(5)
             .tickSize(chart_d.height, chart_d.height, 0)
             .tickSubdivide(2)
+
+  section
+    h3 Got it?
+    ul
+      li.fragment We create axis just like before (create/draw)
+      li.fragment Just be sure we set a the tick size to charts height <code>tickSize(chart_d.height, chart_d.height, 0)</code>
+
+
+  section 
+    h3 What we have so far
+    ul
+      li Insert SVG container (canvas)
+      li Create new elements via data binding
+      li Use linear scale to convert width
+      li Use ordinal scale to convert Y value
+      li Display labels through axis
+      li.fragment Display ticks through axis
