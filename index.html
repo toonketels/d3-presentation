@@ -44,7 +44,13 @@
 <section>
   <h2>What is this about</h2>
   <ul>
-    <li>SVG</li>
+    <li>Insert SVG into DOM</li>
+    <li>Create data joins</li>
+    <li>Add margins</li>
+    <li>Create scales</li>
+    <li>Create axis, labels and ticks</li>
+    <li>Use animations</li>
+    <li>Update chart when data changes</li>
   </ul>
 </section>
 <section>
@@ -836,8 +842,106 @@
   </section>
 </section>
 <section>
-  <h2>meta</h2>
+  <section>
+    <h2>Timely updates</h2>
+    <h4>11. How could we easily update our numbers?</h4>
+  </section>
+  <section>
+    <h4>Our data changes every x seconds... we better update the chart.</h4>
+  </section>
+  <section>
+    <p>We've changed the data source so that:</p>
+    <ul>
+      <li class="fragment">drawChart gets called once, the first time</li>
+      <li class="fragment">every x seconds, updateChart gets called with new data</li>
+    </ul>
+  </section>
+  <section>
+    <h3>Nothing changes in drawChart</h3>
+    <pre class="fragment"><code>
+        bars = chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', 0)
+            .attr('y', function(d, i) { return y(d.name) })
+            .attr('height', y.rangeBand)u
+            .style('fill', '#333');
+            
+        bars
+          .transition()
+            .duration(600)
+            .attr('width', function(d, i) { return x(d.value) })
+          .transition()
+            .duration(400)
+            .style('fill', 'black')
+            </code></pre>
+  </section>
+  <section>
+    <h3>UpdateChart..</h3>
+    <pre class="fragment"><code>
+        function updateChart(data) {
+        
+          bars
+              .data(data)
+          .transition()
+              .duration(600)
+              .attr('width', function(d, i) { return x(d.value) });
+              
+        }</code></pre>
+  </section>
+  <section>
+    <p>Animations make the updates easier to follow.</p>
+  </section>
 </section>
+<section>
+  <section>
+    <h2>Update the entire axis</h2>
+    <h4>12. What's with all that unused whitespace?</h4>
+  </section>
+  <section>
+    <p>To update the axis, just <em>update the scale</em> and call something on the axis again.</p>
+  </section>
+  <section>
+    <pre class="fragment"><code>
+        // Set the current overal max;
+        max_overall = d3.max(data, function(d, i) { return d.value });</code></pre>
+    <pre class="fragment"><code>
+        // Update the x scale
+        x.domain([0, max_overall])</code></pre>
+    <pre class="fragment"><code>
+        // Update x axis
+        axis_x
+          .transition()
+            .duration(600)
+            .call(axis_x_f);</code></pre>
+    <pre class="fragment"><code>
+        // Update the bars with new data
+        bars
+            .data(data)
+        .transition()
+            .delay(800)
+            .duration(600)
+            .attr('width', function(d, i) { return x(d.value) });</code></pre>
+  </section>
+</section>
+<section>
+  <h2>That's it.</h2>
+</section>
+<Section>
+  <h2>Recap
+    <ul>
+      <li>Inserted SVG element into DOM</li>
+      <li>Bound data with elements and use `enter()` to display them</li>
+      <li>Added margin to our main svg element with a `g`</li>
+      <li>Created scales to convert from input domain to output</li>
+      <li>Used scales to create axis which create labels</li>
+      <li>Used scales to create axis which create ticks</li>
+      <li>Animate items with `transition()`</li>
+      <li>Update data and use animation to update chart</li>
+    </ul>
+  </h2>
+</Section>
 <section>
   <h2>Thanks</h2>
   <h4>Toon Ketels</h4>

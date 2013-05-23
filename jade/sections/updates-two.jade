@@ -1,0 +1,33 @@
+section
+  section
+    h2 Update the entire axis
+    h4 12. What's with all that unused whitespace?
+
+  section
+    p To update the axis, just <em>update the scale</em> and call something on the axis again.
+
+  section
+    pre.fragment
+      code.
+        // Set the current overal max;
+        max_overall = d3.max(data, function(d, i) { return d.value });
+    pre.fragment
+      code.
+        // Update the x scale
+        x.domain([0, max_overall])
+    pre.fragment
+      code.
+        // Update x axis
+        axis_x
+          .transition()
+            .duration(600)
+            .call(axis_x_f);
+    pre.fragment
+      code.
+        // Update the bars with new data
+        bars
+            .data(data)
+          .transition()
+            .delay(800)
+            .duration(600)
+            .attr('width', function(d, i) { return x(d.value) });
