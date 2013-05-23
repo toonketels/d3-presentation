@@ -97,14 +97,26 @@ module.exports = function(grunt) {
 
 		watch: {
 			main: {
-				files: [ 'Gruntfile.js', 'js/reveal.js', 'css/reveal.css' ],
+				files: [ 'jade/*', 'jade/sections/*', 'Gruntfile.js', 'js/reveal.js', 'css/reveal.css' ],
 				tasks: 'default'
 			},
 			theme: {
 				files: [ 'css/theme/source/*.scss', 'css/theme/template/*.scss' ],
 				tasks: 'themes'
 			}
-		}
+		},
+
+        jade: {
+            html: {
+                files: {
+                  './': ['jade/*.jade']
+                },
+                options: {
+                    client: false,
+                    pretty: true
+                }
+            }
+        }
 
 	});
 
@@ -116,9 +128,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks( 'grunt-contrib-sass' );
 	grunt.loadNpmTasks( 'grunt-contrib-connect' );
 	grunt.loadNpmTasks( 'grunt-zip' );
+	grunt.loadNpmTasks( 'grunt-jade' );
 
 	// Default task
-	grunt.registerTask( 'default', [ 'jshint', 'cssmin', 'uglify' ] );
+	grunt.registerTask( 'default', [ 'jade', 'jshint', 'cssmin', 'uglify' ] );
 
 	// Theme task
 	grunt.registerTask( 'themes', [ 'sass' ] );

@@ -1,0 +1,23 @@
+section
+  section
+    h2 Insert SVG into DOM
+    h4 2. How to use d3 to create SVG element?
+
+  section
+    h2 How to use d3 to create SVG element?
+    pre
+      code.
+        var canvas_d = {width: 700, height: 500},
+      
+        canvas = d3.select('#canvas').append('svg')
+            .attr('width', canvas_d.width)
+            .attr('height', canvas_d.height);
+
+  section
+    h2 How to use d3 to create SVG element?
+    pre
+      code.
+        <div id="canvas">
+          <svg width="700" height="500">
+          </svg>
+        </div>

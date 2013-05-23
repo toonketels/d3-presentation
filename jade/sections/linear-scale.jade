@@ -1,0 +1,103 @@
+section
+  section
+    h2 Linear scales
+    h4 5. I hate the math in our code, can't we use scales for that?
+
+  section
+    h2 Linear scales
+    pre
+      code.
+       attr('width', function(d, i){ return chart_d.width * (d/max_overall) })
+
+  section
+    h2 3 types of scales
+    ul
+      li time scale - for time domains.
+      li ordinal scales -  for discrete input domains, such as names or categories.
+      li quantitative scales - for continuous input domains, such as numbers.
+
+  section
+    h3 A scale convert some input into some output
+    pre.fragment
+      code.
+       attr('width', function(d, i){ return chart_d.width * (d/max_overall) })
+    pre.fragment
+      code.
+        width:  data => pixels
+
+  section
+    h3 Input domain
+    pre.fragment
+      code
+        var data = [26009896, 
+                   179804755, 
+                   494478797, 
+                  2718505888, 
+                  1765686465, 
+                  4015692380, 
+                  3611612096];
+
+  section
+    h3 Output
+    pre.fragment
+      code
+        <rect x="0" width="5" y="0" height="50"></rect>
+        <rect x="0" width="31" y="70" height="50"></rect>
+        <rect x="0" width="86" y="140" height="50"></rect>
+        <rect x="0" width="474" y="210" height="50"></rect>
+        <rect x="0" width="308" y="280" height="50"></rect>
+        <rect x="0" width="700" y="350" height="50"></rect>
+        <rect x="0" width="630" y="420" height="50"></rect>
+
+  section
+    h3 Conversion
+    pre.fragment
+      code
+        26009896           =>              5
+        179804755          =>             31
+        494478797          =>             86
+        2718505888         =>            474
+        1765686465         =>            308
+        4015692380         =>            700
+        3611612096         =>            630
+
+  section
+    h3 Scale function
+    pre.fragment
+      code
+        var width = scaleFunc(179804755)     // 31
+
+  section
+    h2 How to create a scalefunction?
+
+  section
+    h3 First, create scale
+    pre.fragment
+      code.
+        x = d3.scale.linear()
+          .domain([0, max_overall])
+          .range([0, chart_d.width]);
+
+  section
+    h3 Use it
+    pre.fragment
+      code.
+        chart.selectAll('rect')
+            .data( data )
+          .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', function(d, i){ return x(d) })
+            .attr('y',  function(d, i) { return 60 * i })
+            .attr('height', 50);
+
+  section
+    h3 In short
+    pre.fragment
+      code.
+        chart.selectAll('rect')
+            .data( data )
+          .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', x)
+            .attr('y',  function(d, i) { return 60 * i })
+            .attr('height', 50);

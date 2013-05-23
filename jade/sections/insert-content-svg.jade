@@ -1,0 +1,165 @@
+section
+  section
+    h2 Insert elements into SVG
+    h4 3. How to display content in SVG?
+
+  section
+    h2 Attempt one
+    h4.fragment Iterate over each item in the data and append a `rect` element
+
+  section
+    h2 Source we want to generate
+    pre
+      code.
+        <rect x="0" width="5" y="0" height="50"></rect>
+        <rect x="0" width="31" y="70" height="50"></rect>
+        <rect x="0" width="86" y="140" height="50"></rect>
+        <rect x="0" width="474" y="210" height="50"></rect>
+        <rect x="0" width="308" y="280" height="50"></rect>
+        <rect x="0" width="700" y="350" height="50"></rect>
+        <rect x="0" width="630" y="420" height="50"></rect>
+
+  section
+    h2 What changes?
+    ul.fragment
+      li width
+      li y
+
+  section
+    h2 What math do we need?
+    ul.fragment
+      li y
+      li width
+
+  section
+    h2 What math do we need?
+    pre.fragment
+      code.
+        y = 70  * i
+
+    pre.fragment
+      code.
+
+        width = canvas_d.width * (d/max_overall)
+
+  section
+    h3 Use d3 to calculate the overall max
+    pre
+      code.
+
+        var data = [26009896, 179804755, 494478797, 2718505888, 1765686465, 4015692380, 3611612096],
+    
+        var max_overall = d3.max(data);
+
+  section
+    h3 All together now
+    pre
+      code.
+        data.map(function(d, i) {
+    
+          canvas.append('rect')
+           .attr('x', 0 )
+           .attr('width', canvas_d.width * (d/max_overall))
+           .attr('y', 70 * i)
+           .attr('height', 50)
+    
+        });
+
+  section
+    h3 The same, written differently
+    pre
+      code.
+        data.map(function(d, i) {
+
+          canvas.append('rect')
+           .attr('x', 0 )
+           .attr('width', (function(d, i) {
+             return canvas_d.width * (d/max_overall)
+           })(d, i))
+           .attr('y', (function(d, i) {
+             return 70 * i;
+           })(d, i))
+           .attr('height', 50);
+
+        });
+
+  section
+    h3 End result
+    pre
+      code.
+        <svg width="700" height="500">
+          <rect x="0" width="5" y="0" height="50"></rect>
+          <rect x="0" width="31" y="70" height="50"></rect>
+          <rect x="0" width="86" y="140" height="50"></rect>
+          <rect x="0" width="474" y="210" height="50"></rect>
+          <rect x="0" width="308" y="280" height="50"></rect>
+          <rect x="0" width="700" y="350" height="50"></rect>
+          <rect x="0" width="630" y="420" height="50"></rect>
+        </svg>
+  
+  section
+    h2 Attempt two
+    h4.fragment Do it the d3 way with <strong>data-joins</strong>
+
+  section
+    h2 How d3 wants us to do it
+    pre.fragment
+      code.
+        canvas.selectAll('rect')
+            .data( data )
+          .enter().append('rect')
+            .attr('x', 0 )
+            .attr('width', function(d, i){
+              return canvas_d.width * (d/max_overall);
+            })
+            .attr('y',  function(d, i) {
+              return 70 * i;
+            })
+            .attr('height', 50)
+
+  section
+    h2 One by one
+    pre.fragment
+      code.
+        canvas.selectAll('rect')
+
+    pre.fragment
+      code.
+        .data( data )
+
+    pre.fragment
+      code.
+       .enter()
+
+    pre.fragment
+      code.
+        .append('rect')
+            .attr('x', 0 )
+            .attr('width', function(d, i){
+              return canvas_d.width * (d/max_overall);
+            })
+            .attr('y',  function(d, i) {
+              return 70 * i;
+            })
+            .attr('height', 50)
+
+  section
+    h2 How d3 wants us to do it
+    pre
+      code.
+        canvas.selectAll('rect')
+            .data( data )
+          .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', function(d, i){ return canvas_d.width * (d/max_overall) })
+            .attr('y',  function(d, i) { return 70 * i })
+            .attr('height', 50);
+
+  section
+    h2 What we need to remember from data joining
+    ul.fragment
+      li We select items from within our SVG element
+      li We create a data joing with data( data )
+      li We can act on the existing or updated items
+      li We can act on new items, these should be created and appended
+      li We can act on old items, these should be removed
