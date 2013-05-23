@@ -16,6 +16,9 @@ section
     pre.fragment
       code.
         width:  data => pixels
+    pre.fragment
+      code.
+        var width = scaleFunc(179804755)     // 31
 
   section
     h3 Input domain
@@ -64,18 +67,8 @@ section
         0                  =>              0
         overall_max        =>  chart_d.width
 
-
-  section
-    h3 Scale function
-    pre.fragment
-      code.
-        var width = scaleFunc(179804755)     // 31
-
   section
     h3 How to create a scale function?
-
-  section
-    h3 Create scale
     pre.fragment
       code.
         x = d3.scale.linear()

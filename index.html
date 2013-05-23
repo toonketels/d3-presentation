@@ -330,8 +330,9 @@
   <section>
     <h3>A scale convert some input into some output</h3>
     <pre class="fragment"><code>attr('width', function(d, i){ return chart_d.width * (d/max_overall) })</code></pre>
+    <pre class="fragment"><code>width:  data => pixels</code></pre>
     <pre class="fragment"><code>
-        width:  data => pixels
+        var width = scaleFunc(179804755)     // 31
         </code></pre>
   </section>
   <section>
@@ -378,20 +379,10 @@
     <pre class="fragment"><code>
         0                  =>              0
         overall_max        =>  chart_d.width
-        
-        </code></pre>
-  </section>
-  <section>
-    <h3>Scale function</h3>
-    <pre class="fragment"><code>
-        var width = scaleFunc(179804755)     // 31
         </code></pre>
   </section>
   <section>
     <h3>How to create a scale function?</h3>
-  </section>
-  <section>
-    <h3>Create scale</h3>
     <pre class="fragment"><code>
         x = d3.scale.linear()
           .domain([0, max_overall])
@@ -712,7 +703,7 @@
   </section>
   <section>
     <pre><code>
-        .attr('width', function(d, i) { return x(d.value) })
+        .attr('width', x)
         </code></pre>
     <pre class="fragment"><code>
         .attr('width', function(d, i) { return x(d.value) })
