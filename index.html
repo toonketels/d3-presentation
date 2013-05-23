@@ -279,18 +279,7 @@
             .attr('x', 0)
             .attr('width', function(d, i){ return canvas_d.width * (d/max_overall) })
             .attr('y',  function(d, i) { return 70 * i })
-            .attr('height', 50);
-            </code></pre>
-  </section>
-  <section>
-    <h2>What we need to remember from data joining</h2>
-    <ul class="fragment">
-      <li>We select items from within our SVG element</li>
-      <li>We create a data joing with data( data )</li>
-      <li>We can act on the existing or updated items</li>
-      <li>We can act on new items, these should be created and appended</li>
-      <li>We can act on old items, these should be removed</li>
-    </ul>
+            .attr('height', 50);</code></pre>
   </section>
 </section>
 <section>
@@ -418,7 +407,19 @@
         circles.style('fill', 'blue');
         
         // Exit
-        circles.exit().remove();</code></pre>
+        circles.exit().remove();
+        
+        </code></pre>
+  </section>
+  <section>
+    <h2>What we need to remember from data joining</h2>
+    <ul class="fragment">
+      <li>We select items from within our SVG element</li>
+      <li>We create a data joing with data( data )</li>
+      <li>We can act on the existing or updated items</li>
+      <li>We can act on new items, these should be created and appended</li>
+      <li>We can act on old items, these should be removed</li>
+    </ul>
   </section>
 </section>
 <section>
@@ -929,18 +930,17 @@
   <h2>That's it.</h2>
 </section>
 <Section>
-  <h2>Recap
-    <ul>
-      <li>Inserted SVG element into DOM</li>
-      <li>Bound data with elements and use `enter()` to display them</li>
-      <li>Added margin to our main svg element with a `g`</li>
-      <li>Created scales to convert from input domain to output</li>
-      <li>Used scales to create axis which create labels</li>
-      <li>Used scales to create axis which create ticks</li>
-      <li>Animate items with `transition()`</li>
-      <li>Update data and use animation to update chart</li>
-    </ul>
-  </h2>
+  <h2>Recap</h2>
+  <ul>
+    <li>Inserted SVG element into DOM</li>
+    <li>Bound data with elements and use `enter()` to display them</li>
+    <li>Added margin to our main svg element with a `g`</li>
+    <li>Created scales to convert from input domain to output</li>
+    <li>Used scales to create axis which create labels</li>
+    <li>Used scales to create axis which create ticks</li>
+    <li>Animate items with `transition()`</li>
+    <li>Update data and use animation to update chart</li>
+  </ul>
 </Section>
 <section>
   <h2>Thanks</h2>

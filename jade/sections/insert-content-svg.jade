@@ -154,12 +154,3 @@ section
             .attr('width', function(d, i){ return canvas_d.width * (d/max_overall) })
             .attr('y',  function(d, i) { return 70 * i })
             .attr('height', 50);
-
-  section
-    h2 What we need to remember from data joining
-    ul.fragment
-      li We select items from within our SVG element
-      li We create a data joing with data( data )
-      li We can act on the existing or updated items
-      li We can act on new items, these should be created and appended
-      li We can act on old items, these should be removed
