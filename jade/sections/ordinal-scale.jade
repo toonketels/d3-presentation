@@ -1,13 +1,21 @@
 section
   section
-    h2 Ordinal scales
-    h4 6. I hate the math in our code, can't we use scales for that?
+    h2 Ditch the math, part 2
+    blockquote I hate the math in our code, can't we use scales for that?
 
   section
-    h2 Ordinal scales
+    pre
+      code.
+       attr('y', function(d, i){ return i * 60 })
+
+  section
+    h3 Convert input to output
     pre
       code.
         y:  data-item => pixels
+    pre.fragment
+      code.
+        var y = someOtherScaleFunc(179804755)     // 70
 
   section
     h3 Input domain
@@ -46,16 +54,28 @@ section
         3611612096         =>            420
 
   section
-    h3 Scale function
+    h3 Conversion
     pre.fragment
       code.
-        var y = someOtherScaleFunc(179804755)     // 70
+        26009896           =>              0
+        179804755          =>              ?
+        494478797          =>              ?
+        2718505888         =>              ?
+        1765686465         =>              ?
+        4015692380         =>              ?
+        3611612096         =>       500 - 60
+    pre.fragment
+      code.
+        26009896           =>              0
+        179804755          =>              ?
+        494478797          =>              ?
+        2718505888         =>              ?
+        1765686465         =>              ?
+        4015692380         =>              ?
+        3611612096         => height - rangeBand
 
   section
-    h2 How to create a scalefunction?
-
-  section
-    h3 First, create scale
+    h3 How to create a scale function?
     pre.fragment
       code.
         y = d3.scale.ordinal()
@@ -75,7 +95,7 @@ section
             .attr('height', 50);
 
   section
-    h3 Also to get the height
+    h3 For the height
     pre.fragment
       code.
         chart.selectAll('rect')
@@ -85,3 +105,20 @@ section
             .attr('width', x)
             .attr('y', y)
             .attr('height', y.rangeBand);
+
+  section
+    h2 Got it?
+    ul
+      li.fragment Create an ordinal scale with <code>d3.scale.ordinal()</code> for individual items
+      li.fragment Pas all the values as input domain <code>.domain(data)</code>
+      li.fragment Use rangeBands as output <code>.rangeBands([0, chart_d.height])</code>
+      li.fragment Use <code>y.rangeBand</code> to get the height of a bar
+
+
+  section 
+    h3 What we have so far
+    ul
+      li Insert SVG container (canvas)
+      li Create new elements via data binding
+      li Use linear scale to convert width
+      li.fragment Use ordinal scale to convert Y value

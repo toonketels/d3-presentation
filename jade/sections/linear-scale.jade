@@ -1,20 +1,12 @@
 section
   section
-    h2 Linear scales
-    h4 5. I hate the math in our code, can't we use scales for that?
+    h2 Ditch the math, part 1
+    Blockquote I hate the math in our code, can't we use scales for that?
 
   section
-    h2 Linear scales
     pre
       code.
        attr('width', function(d, i){ return chart_d.width * (d/max_overall) })
-
-  section
-    h2 3 types of scales
-    ul
-      li time scale - for time domains.
-      li ordinal scales -  for discrete input domains, such as names or categories.
-      li quantitative scales - for continuous input domains, such as numbers.
 
   section
     h3 A scale convert some input into some output
@@ -62,16 +54,28 @@ section
         3611612096         =>            630
 
   section
+    h3 Conversion
+    pre.fragment
+      code.
+        0                  =>              0
+        4015692380         =>            700
+    pre.fragment
+      code.
+        0                  =>              0
+        overall_max        =>  chart_d.width
+
+
+  section
     h3 Scale function
     pre.fragment
       code.
         var width = scaleFunc(179804755)     // 31
 
   section
-    h2 How to create a scalefunction?
+    h3 How to create a scale function?
 
   section
-    h3 First, create scale
+    h3 Create scale
     pre.fragment
       code.
         x = d3.scale.linear()
@@ -101,3 +105,17 @@ section
             .attr('width', x)
             .attr('y',  function(d, i) { return 60 * i })
             .attr('height', 50);
+
+  section
+    h2 Got it?
+    ul
+      li.fragment Create a linear scale with <code>d3.scale.linear()</code>
+      li.fragment Set the input domain as the lowest/highest value <code>.domain([0, max_overall])</code>
+      li.fragment Set the output range as the lowest/highest value <code>.range([0, chart_d.width])</code>
+
+  section 
+    h3 What we have so far
+    ul
+      li Insert SVG container (canvas)
+      li Create new elements via data binding
+      li.fragment Use linear scale to convert width

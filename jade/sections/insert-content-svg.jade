@@ -1,14 +1,14 @@
 section
   section
     h2 Insert elements into SVG
-    h4 3. How to display content in SVG?
+    blockquote How to display content in SVG?
 
   section
     h2 Attempt one
     h4.fragment Iterate over each item in the data and append a `rect` element
 
   section
-    h2 Source we want to generate
+    h3 Source we want to generate
     pre
       code.
         <rect x="0" width="5" y="0" height="50"></rect>
@@ -20,19 +20,13 @@ section
         <rect x="0" width="630" y="420" height="50"></rect>
 
   section
-    h2 What changes?
+    h3 What changes?
     ul.fragment
-      li width
-      li y
+      li <code>width</code>
+      li <code>y</code>
 
   section
-    h2 What math do we need?
-    ul.fragment
-      li y
-      li width
-
-  section
-    h2 What math do we need?
+    h3 What math do we need?
     pre.fragment
       code.
         y = 70  * i
@@ -41,6 +35,14 @@ section
       code.
 
         width = canvas_d.width * (d/max_overall)
+
+    pre.fragment
+      code.
+        50         // our value
+        100        // maximum value
+        700 px     // width
+
+        => width = 700 px * (50 / 100)    // 350
 
   section
     h3 Use d3 to calculate the overall max
@@ -102,7 +104,7 @@ section
     h4.fragment Do it the d3 way with <strong>data-joins</strong>
 
   section
-    h2 How d3 wants us to do it
+    h3 How d3 wants us to do it
     pre.fragment
       code.
         canvas.selectAll('rect')
@@ -118,7 +120,7 @@ section
             .attr('height', 50)
 
   section
-    h2 One by one
+    h3 One by one
     pre.fragment
       code.
         canvas.selectAll('rect')
@@ -144,7 +146,7 @@ section
             .attr('height', 50)
 
   section
-    h2 How d3 wants us to do it
+    h3 How d3 wants us to do it
     pre
       code.
         canvas.selectAll('rect')
@@ -157,9 +159,17 @@ section
             .attr('y',  function(d, i) { return 70 * i })
             .attr('height', 50);
 
+  section
+    h3 Got it? 
+    ul
+      li.fragment Select elements with <code>.selectAll('rect')</code>
+      li.fragment Create data join with <code>.data( data )</code>
+      li.fragment Get the enter subcollection via <code>.enter()</code>
+      li.fragment Append the elements via <code>.append('rect')</code>
+      li.fragment Set attributes with <code>.attr('name', 'value')</code>
+
   section 
-    h2 What we have so far
-    ul.fragment
-      li Insert SVG container (canvas)
-      li Create new elements via data binding
-      li Set attributes to those new items
+    h3 What we have so far
+    ul
+      li.fragment Insert SVG container (canvas)
+      li.fragment Create new elements via data binding

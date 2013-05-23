@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>Grunt.js - the JavaScript Task Runner</title>
+
+        <meta name="description" content="Presentation about Grunt.js - the JavaScript Task Runner">
+        <meta name="author" content="Toon Ketels">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" href="css/reveal.min.css">
+        <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+        <!-- For syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+        <script>
+            document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+<section>
+  <h1>d3.js</h1>
+  <h3>Data Driven Documents.</h3>
+  <p><small><a href="http://twitter.com/toonketels">Toon Ketels</a></small></p>
+</section>
+<section>
+  <h2>What is this about</h2>
+  <ul>
+    <li>Insert SVG into DOM</li>
+    <li>Data joins</li>
+    <li>Scales</li>
+    <li>Axis & labels</li>
+    <li>Axis & ticks</li>
+    <li>Animations</li>
+    <li>Update chart when data changes</li>
+  </ul>
+</section>
+<section>
+  <section>
+    <h2>SVG</h2>
+    <h4>Scalable Vector Graphics</h4>
+  </section>
+  <section>
+    <h3>What are SVG?</h3>
+    <blockquote>Scalable Vector Graphics (SVG) is an XML-based vector image format for two-dimensional graphics that has support for interactivity and animation. The SVG specification is an open standard developed by the World Wide Web Consortium (W3C) since 1999.</blockquote>
+    <p><small><a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">Wikipedia</a></small></p>
+  </section>
+  <section>
+    <h3>What we need to know</h3>
+    <ul>
+      <li>XML based - "tags and attributes"</li>
+      <li>optimized for images - better for visualization</li>
+    </ul>
+  </section>
+  <section>
+    <h3>SVG elements</h3>
+    <pre><code>
+        <svg></svg>
+        <rect></rect>
+        <path></path>
+        <circle></circle>
+        <text></text>
+        </code></pre>
+  </section>
+  <section>
+    <h3>SVG attributes</h3>
+    <pre class="fragment"><code><rect x="0" width="5" y="0" height="50"></rect></code></pre>
+    <pre class="fragment"><code><circle cx="100" cy="250" r="40"></circle></code></pre>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>SVG in the source</h2>
+    <blockquote>Hardcoded into the HTML source</blockquote>
+  </section>
+  <section>
+    <pre><code>
+        <svg width="700" height="500">
+          <rect x="0" width="5" y="0" height="50"></rect>
+          <rect x="0" width="31" y="70" height="50"></rect>
+          <rect x="0" width="86" y="140" height="50"></rect>
+          <rect x="0" width="474" y="210" height="50"></rect>
+          <rect x="0" width="308" y="280" height="50"></rect>
+          <rect x="0" width="700" y="350" height="50"></rect>
+          <rect x="0" width="630" y="420" height="50"></rect>
+        </svg>
+        </code></pre>
+  </section>
+  <section>
+    <h3>Got it?</h3>
+    <ul>
+      <li class="fragment">Hardcode SVG into the DOM</li>
+    </ul>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Insert SVG into DOM</h2>
+    <blockquote>How to use d3 to create SVG element?</blockquote>
+  </section>
+  <section>
+    <h3>How to use d3 to create SVG element?</h3>
+    <pre><code>
+        var canvas_d = {width: 700, height: 500},
+        
+        canvas = d3.select('#canvas').append('svg')
+            .attr('width', canvas_d.width)
+            .attr('height', canvas_d.height);
+            </code></pre>
+  </section>
+  <section>
+    <h3>How to use d3 to create SVG element?</h3>
+    <pre><code>
+        <div id="canvas">
+          <svg width="700" height="500">
+          </svg>
+        </div>
+        </code></pre>
+  </section>
+  <section>
+    <h3>Got it?</h3>
+    <ul>
+      <li class="fragment">Search for existing DOM node</li>
+      <li class="fragment">Use <code>.append('svg')</code></li>
+      <li class="fragment">Set attributies with <code>.attr('name', 'value')</code></li>
+    </ul>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Insert elements into SVG</h2>
+    <blockquote>How to display content in SVG?</blockquote>
+  </section>
+  <section>
+    <h2>Attempt one</h2>
+    <h4 class="fragment">Iterate over each item in the data and append a `rect` element</h4>
+  </section>
+  <section>
+    <h3>Source we want to generate</h3>
+    <pre><code>
+        <rect x="0" width="5" y="0" height="50"></rect>
+        <rect x="0" width="31" y="70" height="50"></rect>
+        <rect x="0" width="86" y="140" height="50"></rect>
+        <rect x="0" width="474" y="210" height="50"></rect>
+        <rect x="0" width="308" y="280" height="50"></rect>
+        <rect x="0" width="700" y="350" height="50"></rect>
+        <rect x="0" width="630" y="420" height="50"></rect>
+        </code></pre>
+  </section>
+  <section>
+    <h3>What changes?</h3>
+    <ul class="fragment">
+      <li><code>width</code></li>
+      <li><code>y</code></li>
+    </ul>
+  </section>
+  <section>
+    <h3>What math do we need?</h3>
+    <pre class="fragment"><code>
+        y = 70  * i
+        </code></pre>
+    <pre class="fragment"><code>
+        width = canvas_d.width * (d/max_overall)
+        </code></pre>
+    <pre class="fragment"><code>
+        50         // our value
+        100        // maximum value
+        700 px     // width
+        
+        => width = 700 px * (50 / 100)    // 350
+        </code></pre>
+  </section>
+  <section>
+    <h3>Use d3 to calculate the overall max</h3>
+    <pre><code>
+        var data = [26009896, 179804755, 494478797, 2718505888, 1765686465, 4015692380, 3611612096],
+        
+        var max_overall = d3.max(data);
+        </code></pre>
+  </section>
+  <section>
+    <h3>All together now</h3>
+    <pre><code>
+        data.map(function(d, i) {
+        
+          canvas.append('rect')
+           .attr('x', 0 )
+           .attr('width', canvas_d.width * (d/max_overall))
+           .attr('y', 70 * i)
+           .attr('height', 50)
+           
+        });
+        </code></pre>
+  </section>
+  <section>
+    <h3>The same, written differently</h3>
+    <pre><code>
+        data.map(function(d, i) {
+        
+          canvas.append('rect')
+           .attr('x', 0 )
+           .attr('width', (function(d, i) {
+             return canvas_d.width * (d/max_overall)
+           })(d, i))
+           .attr('y', (function(d, i) {
+             return 70 * i;
+           })(d, i))
+           .attr('height', 50);
+           
+        });
+        </code></pre>
+  </section>
+  <section>
+    <h3>End result</h3>
+    <pre><code>
+        <svg width="700" height="500">
+          <rect x="0" width="5" y="0" height="50"></rect>
+          <rect x="0" width="31" y="70" height="50"></rect>
+          <rect x="0" width="86" y="140" height="50"></rect>
+          <rect x="0" width="474" y="210" height="50"></rect>
+          <rect x="0" width="308" y="280" height="50"></rect>
+          <rect x="0" width="700" y="350" height="50"></rect>
+          <rect x="0" width="630" y="420" height="50"></rect>
+        </svg>
+        </code></pre>
+  </section>
+  <section>
+    <h2>Attempt two</h2>
+    <h4 class="fragment">Do it the d3 way with <strong>data-joins</strong></h4>
+  </section>
+  <section>
+    <h3>How d3 wants us to do it</h3>
+    <pre class="fragment"><code>
+        canvas.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0 )
+            .attr('width', function(d, i){
+              return canvas_d.width * (d/max_overall);
+            })
+            .attr('y',  function(d, i) {
+              return 70 * i;
+            })
+            .attr('height', 50)
+            </code></pre>
+  </section>
+  <section>
+    <h3>One by one</h3>
+    <pre class="fragment"><code>
+        canvas.selectAll('rect')
+        </code></pre>
+    <pre class="fragment"><code>
+        .data( data )
+        </code></pre>
+    <pre class="fragment"><code>
+        .enter()
+        </code></pre>
+    <pre class="fragment"><code>
+        .append('rect')
+            .attr('x', 0 )
+            .attr('width', function(d, i){
+              return canvas_d.width * (d/max_overall);
+            })
+            .attr('y',  function(d, i) {
+              return 70 * i;
+            })
+            .attr('height', 50)
+            </code></pre>
+  </section>
+  <section>
+    <h3>How d3 wants us to do it</h3>
+    <pre><code>
+        canvas.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', function(d, i){ 
+              return canvas_d.width * (d/max_overall)
+            })
+            .attr('y',  function(d, i) { return 70 * i })
+            .attr('height', 50);
+            </code></pre>
+  </section>
+  <section>
+    <h3>Got it? </h3>
+    <ul>
+      <li class="fragment">Select elements with <code>.selectAll('rect')</code></li>
+      <li class="fragment">Create data join with <code>.data( data )</code></li>
+      <li class="fragment">Get the enter subcollection via <code>.enter()</code></li>
+      <li class="fragment">Append the elements via <code>.append('rect')</code></li>
+      <li class="fragment">Set attributes with <code>.attr('name', 'value')</code></li>
+    </ul>
+  </section>
+  <section> 
+    <h3>What we have so far</h3>
+    <ul>
+      <li class="fragment">Insert SVG container (canvas)</li>
+      <li class="fragment">Create new elements via data binding</li>
+    </ul>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Ditch the math, part 1</h2>
+    <Blockquote>I hate the math in our code, can't we use scales for that?</Blockquote>
+  </section>
+  <section>
+    <pre><code>
+        attr('width', function(d, i){ return chart_d.width * (d/max_overall) })
+        </code></pre>
+  </section>
+  <section>
+    <h3>A scale convert some input into some output</h3>
+    <pre class="fragment"><code>attr('width', function(d, i){ return chart_d.width * (d/max_overall) })</code></pre>
+    <pre class="fragment"><code>
+        width:  data => pixels
+        </code></pre>
+  </section>
+  <section>
+    <h3>Input domain</h3>
+    <pre class="fragment"><code>
+        var data = [26009896, 
+                   179804755, 
+                   494478797, 
+        2718505888, 
+                  1765686465, 
+                  4015692380, 
+                  3611612096];
+                  </code></pre>
+  </section>
+  <section>
+    <h3>Output</h3>
+    <pre class="fragment"><code>
+        <rect x="0" width="5" y="0" height="50"></rect>
+        <rect x="0" width="31" y="70" height="50"></rect>
+        <rect x="0" width="86" y="140" height="50"></rect>
+        <rect x="0" width="474" y="210" height="50"></rect>
+        <rect x="0" width="308" y="280" height="50"></rect>
+        <rect x="0" width="700" y="350" height="50"></rect>
+        <rect x="0" width="630" y="420" height="50"></rect>
+        </code></pre>
+  </section>
+  <section>
+    <h3>Conversion</h3>
+    <pre class="fragment"><code>
+        26009896           =>              5
+        179804755          =>             31
+        494478797          =>             86
+        2718505888         =>            474
+        1765686465         =>            308
+        4015692380         =>            700
+        3611612096         =>            630
+        </code></pre>
+  </section>
+  <section>
+    <h3>Conversion</h3>
+    <pre class="fragment"><code>
+        0                  =>              0
+        4015692380         =>            700</code></pre>
+    <pre class="fragment"><code>
+        0                  =>              0
+        overall_max        =>  chart_d.width
+        
+        </code></pre>
+  </section>
+  <section>
+    <h3>Scale function</h3>
+    <pre class="fragment"><code>
+        var width = scaleFunc(179804755)     // 31
+        </code></pre>
+  </section>
+  <section>
+    <h3>How to create a scale function?</h3>
+  </section>
+  <section>
+    <h3>Create scale</h3>
+    <pre class="fragment"><code>
+        x = d3.scale.linear()
+          .domain([0, max_overall])
+          .range([0, chart_d.width]);
+          </code></pre>
+  </section>
+  <section>
+    <h3>Use it</h3>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', function(d, i){ return x(d) })
+            .attr('y',  function(d, i) { return 60 * i })
+            .attr('height', 50);
+            </code></pre>
+  </section>
+  <section>
+    <h3>In short</h3>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', x)
+            .attr('y',  function(d, i) { return 60 * i })
+            .attr('height', 50);
+            </code></pre>
+  </section>
+  <section>
+    <h2>Got it?</h2>
+    <ul>
+      <li class="fragment">Create a linear scale with <code>d3.scale.linear()</code></li>
+      <li class="fragment">Set the input domain as the lowest/highest value <code>.domain([0, max_overall])</code></li>
+      <li class="fragment">Set the output range as the lowest/highest value <code>.range([0, chart_d.width])</code></li>
+    </ul>
+  </section>
+  <section> 
+    <h3>What we have so far</h3>
+    <ul>
+      <li>Insert SVG container (canvas)</li>
+      <li>Create new elements via data binding</li>
+      <li class="fragment">Use linear scale to convert width</li>
+    </ul>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Ditch the math, part 2</h2>
+    <blockquote>I hate the math in our code, can't we use scales for that?</blockquote>
+  </section>
+  <section>
+    <pre><code>
+        attr('y', function(d, i){ return i * 60 })
+        </code></pre>
+  </section>
+  <section>
+    <h3>Convert input to output</h3>
+    <pre><code>y:  data-item => pixels</code></pre>
+    <pre class="fragment"><code>
+        var y = someOtherScaleFunc(179804755)     // 70
+        </code></pre>
+  </section>
+  <section>
+    <h3>Input domain</h3>
+    <pre class="fragment"><code>
+        var data = [26009896, 
+                   179804755, 
+                   494478797, 
+        2718505888, 
+                  1765686465, 
+                  4015692380, 
+                  3611612096];
+                  </code></pre>
+  </section>
+  <section>
+    <h3>Output</h3>
+    <pre class="fragment"><code>
+        <rect x="0" width="5" y="0" height="50"></rect>
+        <rect x="0" width="31" y="70" height="50"></rect>
+        <rect x="0" width="86" y="140" height="50"></rect>
+        <rect x="0" width="474" y="210" height="50"></rect>
+        <rect x="0" width="308" y="280" height="50"></rect>
+        <rect x="0" width="700" y="350" height="50"></rect>
+        <rect x="0" width="630" y="420" height="50"></rect>
+        </code></pre>
+  </section>
+  <section>
+    <h3>Conversion</h3>
+    <pre class="fragment"><code>
+        26009896           =>              0
+        179804755          =>             70
+        494478797          =>            140
+        2718505888         =>            210
+        1765686465         =>            280
+        4015692380         =>            350
+        3611612096         =>            420
+        </code></pre>
+  </section>
+  <section>
+    <h3>Conversion</h3>
+    <pre class="fragment"><code>
+        26009896           =>              0
+        179804755          =>              ?
+        494478797          =>              ?
+        2718505888         =>              ?
+        1765686465         =>              ?
+        4015692380         =>              ?
+        3611612096         =>       500 - 60</code></pre>
+    <pre class="fragment"><code>
+        26009896           =>              0
+        179804755          =>              ?
+        494478797          =>              ?
+        2718505888         =>              ?
+        1765686465         =>              ?
+        4015692380         =>              ?
+        3611612096         => height - rangeBand
+        </code></pre>
+  </section>
+  <section>
+    <h3>How to create a scale function?</h3>
+    <pre class="fragment"><code>
+        y = d3.scale.ordinal()
+          .domain(data)
+          .rangeBands([0, chart_d.height]);
+          </code></pre>
+  </section>
+  <section>
+    <h3>Use it</h3>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', x)
+            .attr('y', y)
+            .attr('height', 50);
+            </code></pre>
+  </section>
+  <section>
+    <h3>For the height</h3>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', x)
+            .attr('y', y)
+            .attr('height', y.rangeBand);
+            </code></pre>
+  </section>
+  <section>
+    <h2>Got it?</h2>
+    <ul>
+      <li class="fragment">Create an ordinal scale with <code>d3.scale.ordinal()</code> for individual items</li>
+      <li class="fragment">Pas all the values as input domain <code>.domain(data)</code></li>
+      <li class="fragment">Use rangeBands as output <code>.rangeBands([0, chart_d.height])</code></li>
+      <li class="fragment">Use <code>y.rangeBand</code> to get the height of a bar</li>
+    </ul>
+  </section>
+  <section> 
+    <h3>What we have so far</h3>
+    <ul>
+      <li>Insert SVG container (canvas)</li>
+      <li>Create new elements via data binding</li>
+      <li>Use linear scale to convert width</li>
+      <li class="fragment">Use ordinal scale to convert Y value</li>
+    </ul>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Labels and axis</h2>
+    <h4>7. How do we create labels?</h4>
+  </section>
+  <section>
+    <h4>Labels are automatically created by the axis.</h4>
+  </section>
+  <section>
+    <h2>Creating axis</h2>
+    <h4 class="fragment">Creating axis is a two step process</h4>
+    <ul class="fragment">
+      <li>axis creator function</li>
+      <li>draw axis</li>
+    </ul>
+  </section>
+  <section>
+    <h3>Axis creator function</h3>
+    <pre class="fragment"><code>
+        axis_y_f = d3.svg.axis()
+            .scale(y)
+            .orient('left')
+            </code></pre>
+  </section>
+  <section>
+    <h3>Draw it</h3>
+    <pre class="fragment"><code>
+        axis_y = chart.append('g')
+            .attr('class', 'axis y')
+            .call(axis_y_f);
+            </code></pre>
+  </section>
+  <section>
+    <h3>Make it prettier</h3>
+    <pre class="fragment"><code>
+        axis_y_f = d3.svg.axis()
+            .scale(y)
+            .orient('left')
+            .tickPadding(30)
+            .tickSize(0, 0, 0);</code></pre>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Ticks</h2>
+    <h4>8. How do we create ticks?</h4>
+  </section>
+  <section>
+    <h4>Ticks are automatically created by the axis.</h4>
+  </section>
+  <section>
+    <h2>Same story</h2>
+    <pre class="fragment"><code>
+        axis_x_f = d3.svg.axis()
+            .scale(x)
+            .orient('top')
+            .tickPadding(10)
+            .ticks(5)
+            .tickSize(chart_d.height, chart_d.height, 0)
+            </code></pre>
+    <pre class="fragment"><code>
+        axis_x = chart.append('g')
+            .attr('class', 'axis x')
+            .attr( 'transform', 'translate('+ 0 +', '+ chart_d.height +')' )
+            .call(axis_x_f);
+            </code></pre>
+  </section>
+  <section>
+    <h3>Add subticks</h3>
+    <pre class="fragment"><code>
+        axis_x_f = d3.svg.axis()
+            .scale(x)
+            .orient('top')
+            .tickPadding(10)
+            .ticks(5)
+            .tickSize(chart_d.height, chart_d.height, 0)
+            .tickSubdivide(2)</code></pre>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Real labels</h2>
+    <h4>9. Should we display what the values represent as label?</h4>
+  </section>
+  <section>
+    <h2>Change the data data source</h2>
+    <pre class="fragment"><code>
+        var data = [{value: 26009896, name: "angular.js"},
+                    {value: 179804755,  name: "backbone.js"},
+                    {value: 494478797,  name: "batman.js"},
+                    {value: 2718505888,  name: "ember.js"},
+                    {value: 1765686465,  name: "knockout.js"},
+                    {value: 4015692380,  name: "sammy.js"},
+                    {value: 3611612096, name: "spine.js"}];
+                    </code></pre>
+  </section>
+  <section>
+    <h3>Update with data accessor functions</h3>
+    <pre class="fragment"><code>
+        max_overall = d3.max(data, function(d, i) { return d.value }),
+        </code></pre>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', function(d, i) { return x(d.value) })
+            .attr('y', function(d, i) { return y(d.name) })
+            .attr('height', y.rangeBand);
+            </code></pre>
+  </section>
+  <section>
+    <h3>Same for our labels</h3>
+    <pre class="fragment"><code>
+        y = d3.scale.ordinal()
+            .domain(data.map(function(d, i){ return d.name }))
+            .rangeBands([0, chart_d.height], 0.1); </code></pre>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Animation</h2>
+    <h4>10. Why is stuff not moving?</h4>
+  </section>
+  <section>
+    <h3>Animate bars' width</h3>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', 0)
+            .attr('y', function(d, i) { return y(d.name) })
+            .attr('height', y.rangeBand)
+            .style('fill', '#333')
+        .transition()
+            .duration(600)
+            .attr('width', function(d, i) { return x(d.value) })
+            </code></pre>
+  </section>
+  <section>
+    <h3>Chain a color transition</h3>
+    <pre class="fragment"><code>
+        chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', 0)
+            .attr('y', function(d, i) { return y(d.name) })
+            .attr('height', y.rangeBand)
+            .style('fill', '#333')
+        .transition()
+            .duration(600)
+            .attr('width', function(d, i) { return x(d.value) })
+        .transition()
+            .duration(400)
+            .style('fill', 'black')
+            </code></pre>
+  </section>
+  <section>
+    <h3>Animation can be done on about anything</h3>
+    <h3 class="fragment">Axis too...</h3>
+    <pre class="fragment"><code>
+        axis_y = chart.append('g')
+            .attr('class', 'axis y')
+        .transition()
+            .delay(800)
+            .duration(800)
+            .call(axis_y_f);</code></pre>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Timely updates</h2>
+    <h4>11. How could we easily update our numbers?</h4>
+  </section>
+  <section>
+    <h4>Our data changes every x seconds... we better update the chart.</h4>
+  </section>
+  <section>
+    <p>We've changed the data source so that:</p>
+    <ul>
+      <li class="fragment">drawChart gets called once, the first time</li>
+      <li class="fragment">every x seconds, updateChart gets called with new data</li>
+    </ul>
+  </section>
+  <section>
+    <h3>Nothing changes in drawChart</h3>
+    <pre class="fragment"><code>
+        bars = chart.selectAll('rect')
+            .data( data )
+        .enter().append('rect')
+            .attr('x', 0)
+            .attr('width', 0)
+            .attr('y', function(d, i) { return y(d.name) })
+            .attr('height', y.rangeBand)u
+            .style('fill', '#333');
+            
+        bars
+          .transition()
+            .duration(600)
+            .attr('width', function(d, i) { return x(d.value) })
+          .transition()
+            .duration(400)
+            .style('fill', 'black')
+            </code></pre>
+  </section>
+  <section>
+    <h3>UpdateChart..</h3>
+    <pre class="fragment"><code>
+        function updateChart(data) {
+        
+          bars
+              .data(data)
+          .transition()
+              .duration(600)
+              .attr('width', function(d, i) { return x(d.value) });
+              
+        }</code></pre>
+  </section>
+  <section>
+    <p>Animations make the updates easier to follow.</p>
+  </section>
+</section>
+<section>
+  <section>
+    <h2>Update the entire axis</h2>
+    <h4>12. What's with all that unused whitespace?</h4>
+  </section>
+  <section>
+    <p>To update the axis, just <em>update the scale</em> and call something on the axis again.</p>
+  </section>
+  <section>
+    <pre class="fragment"><code>
+        // Set the current overal max;
+        max_overall = d3.max(data, function(d, i) { return d.value });</code></pre>
+    <pre class="fragment"><code>
+        // Update the x scale
+        x.domain([0, max_overall])</code></pre>
+    <pre class="fragment"><code>
+        // Update x axis
+        axis_x
+          .transition()
+            .duration(600)
+            .call(axis_x_f);</code></pre>
+    <pre class="fragment"><code>
+        // Update the bars with new data
+        bars
+            .data(data)
+        .transition()
+            .delay(800)
+            .duration(600)
+            .attr('width', function(d, i) { return x(d.value) });</code></pre>
+  </section>
+</section>
+<section>
+  <h2>That's it.</h2>
+</section>
+<Section>
+  <h2>Recap</h2>
+  <ul>
+    <li>Inserted SVG element into DOM</li>
+    <li>Bound data with elements and use `enter()` to display them</li>
+    <li>Added margin to our main svg element with a `g`</li>
+    <li>Created scales to convert from input domain to output</li>
+    <li>Used scales to create axis which create labels</li>
+    <li>Used scales to create axis which create ticks</li>
+    <li>Animate items with `transition()`</li>
+    <li>Update data and use animation to update chart</li>
+  </ul>
+</Section>
+<section>
+  <h2>Thanks</h2>
+  <h4>Toon Ketels</h4>
+  <p>
+    <small><a href="http://twitter.com/toonketels">@toonketels</a></small>
+    
+    
+    
+  </p>
+</section>            </div>
+
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.min.js"></script>
+
+        <script>
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+
+                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+                transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                    // { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+                    // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>
