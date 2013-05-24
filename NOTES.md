@@ -538,7 +538,7 @@ Asign the bars to a var so we can access it from another function.
         .attr('x', 0)
         .attr('width', 0)
         .attr('y', function(d, i) { return y(d.name) })
-        .attr('height', y.rangeBand)
+        .attr('height', y.rangeBand)u
         .style('fill', '#333');
   
     bars
